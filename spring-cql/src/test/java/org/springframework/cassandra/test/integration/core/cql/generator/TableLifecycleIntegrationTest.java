@@ -56,8 +56,7 @@ public class TableLifecycleIntegrationTest extends AbstractKeyspaceCreatingInteg
 	// TODO - DW Make this better.
 	@Rule
 	public CassandraCQLUnit cassandraCQLUnit = new CassandraCQLUnit(new ClassPathCQLDataSet(
-			"cassandraOperationsTest-cql-dataload.cql", this.keyspace), CASSANDRA_CONFIG, CASSANDRA_HOST,
-			CASSANDRA_NATIVE_PORT);
+			"cassandraOperationsTest-cql-dataload.cql", this.keyspace), CASSANDRA_CONFIG, CASSANDRA_NATIVE_PORT);
 
 	@Test
 	public void testDrop() {
