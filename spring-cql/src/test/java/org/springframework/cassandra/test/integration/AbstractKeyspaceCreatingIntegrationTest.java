@@ -15,7 +15,6 @@
  */
 package org.springframework.cassandra.test.integration;
 
-import org.junit.After;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -63,9 +62,9 @@ public abstract class AbstractKeyspaceCreatingIntegrationTest extends AbstractEm
 	 * Whether to drop the keyspace that was created after the test has completed. Subclasses should override and return
 	 * true, since this default implementation returns false.
 	 */
-	public boolean dropKeyspaceAfterTest() {
+	/*public boolean dropKeyspaceAfterTest() {
 		return false;
-	}
+	}*/
 
 	public void ensureKeyspaceAndSession() {
 
@@ -108,6 +107,7 @@ public abstract class AbstractKeyspaceCreatingIntegrationTest extends AbstractEm
 		}
 	}
 
+	/*
 	@After
 	public void after() {
 		if (dropKeyspaceAfterTest() && keyspace != null) {
@@ -120,5 +120,5 @@ public abstract class AbstractKeyspaceCreatingIntegrationTest extends AbstractEm
 
 			log.info("dropped keyspace {}", keyspace);
 		}
-	}
+	}*/
 }

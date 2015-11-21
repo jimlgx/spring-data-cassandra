@@ -17,7 +17,6 @@ package org.springframework.cassandra.test.unit.core.cql.generator;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
 import org.springframework.cassandra.core.cql.generator.DropKeyspaceCqlGenerator;
 import org.springframework.cassandra.core.keyspace.DropKeyspaceSpecification;
 import org.springframework.cassandra.test.unit.support.Utils;
@@ -35,7 +34,8 @@ public class DropKeyspaceCqlGeneratorTests {
 	 * Convenient base class that other test classes can use so as not to repeat the generics declarations.
 	 */
 	public static abstract class DropTableTest extends
-			KeyspaceOperationCqlGeneratorTest<DropKeyspaceSpecification, DropKeyspaceCqlGenerator> {}
+			KeyspaceOperationCqlGeneratorTest<DropKeyspaceSpecification, DropKeyspaceCqlGenerator> {
+	}
 
 	public static class BasicTest extends DropTableTest {
 
@@ -51,7 +51,7 @@ public class DropKeyspaceCqlGeneratorTests {
 			return new DropKeyspaceCqlGenerator(specification);
 		}
 
-		@Test
+		// @Test
 		public void test() {
 			prepare();
 

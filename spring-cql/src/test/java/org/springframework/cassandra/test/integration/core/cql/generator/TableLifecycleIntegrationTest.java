@@ -47,10 +47,11 @@ public class TableLifecycleIntegrationTest extends AbstractKeyspaceCreatingInteg
 		super("tlit");
 	}
 
+	/*
 	@Override
 	public boolean dropKeyspaceAfterTest() {
 		return true;
-	}
+	}*/
 
 	// This only ensures the keyspace exists before each test, while using a static session from the parent object.
 	// TODO - DW Make this better.
