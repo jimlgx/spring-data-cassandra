@@ -18,9 +18,7 @@ package org.springframework.cassandra.test.integration.core.cql.generator;
 import static org.springframework.cassandra.test.integration.core.cql.generator.CqlTableSpecificationAssertions.assertNoTable;
 import static org.springframework.cassandra.test.integration.core.cql.generator.CqlTableSpecificationAssertions.assertTable;
 
-import org.cassandraunit.CassandraCQLUnit;
-import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
-import org.junit.Rule;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,9 +50,19 @@ public class TableLifecycleIntegrationTest extends AbstractKeyspaceCreatingInteg
 		return true;
 	}
 
+	/*
 	@Rule
 	public CassandraCQLUnit cassandraCQLUnit = new CassandraCQLUnit(new ClassPathCQLDataSet(
 			"cassandraOperationsTest-cql-dataload.cql", this.keyspace), CASSANDRA_CONFIG, CQL_INIT_TIMEOUT);
+	*/
+
+	@Before
+	public void before() {
+		getTemplate().execute("create table book (isbn text, title text, author text, pages int, PRIMARY KEY (isbn));");
+		getTemplate().execute("create table book_alt (isbn text, title text, author text, pages int, PRIMARY KEY (isbn));");
+		getTemplate().execute(
+				"insert into book (isbn, title, author, pages) values ('999999999', 'Book of Nines', 'Nine Nine', 999);");
+	}
 
 	@Test
 	public void testDrop() {
