@@ -18,6 +18,7 @@ package org.springframework.cassandra.test.integration.core.cql.generator;
 import static org.springframework.cassandra.test.integration.core.cql.generator.CqlIndexSpecificationAssertions.assertIndex;
 import static org.springframework.cassandra.test.integration.core.cql.generator.CqlIndexSpecificationAssertions.assertNoIndex;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +44,13 @@ public class IndexLifecycleCqlGeneratorIntegrationTests extends AbstractKeyspace
 	// "integration/cql/generator/CreateIndexCqlGeneratorIntegrationTests-BasicTest.cql", this.keyspace),
 	// CASSANDRA_CONFIG, CASSANDRA_NATIVE_PORT);
 
+	@Rule
+	public void rule() {
+		getTemplate().execute("create table mytable (id uuid primary key, column1 text)");
+	}
+
 	@Test
 	public void lifecycleTest() {
-
-		getTemplate().execute("create table mytable (id uuid primary key, column1 text)");
 
 		CreateIndexCqlGeneratorTests.BasicTest createTest = new CreateIndexCqlGeneratorTests.BasicTest();
 		DropIndexCqlGeneratorTests.BasicTest dropTest = new DropIndexCqlGeneratorTests.BasicTest();
