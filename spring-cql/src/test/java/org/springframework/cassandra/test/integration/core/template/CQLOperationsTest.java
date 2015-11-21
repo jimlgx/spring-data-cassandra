@@ -96,7 +96,7 @@ public class CQLOperationsTest extends AbstractKeyspaceCreatingIntegrationTest {
 	 */
 	@Rule
 	public CassandraCQLUnit cassandraCQLUnit = new CassandraCQLUnit(new ClassPathCQLDataSet(
-			"cassandraOperationsTest-cql-dataload.cql", this.keyspace), CASSANDRA_CONFIG, CASSANDRA_NATIVE_PORT);
+			"cassandraOperationsTest-cql-dataload.cql", this.keyspace), CASSANDRA_CONFIG, CQL_INIT_TIMEOUT);
 
 	@Before
 	public void setupTemplate() {

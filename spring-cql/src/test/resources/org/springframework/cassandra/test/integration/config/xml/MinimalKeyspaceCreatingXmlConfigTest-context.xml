@@ -11,7 +11,7 @@
 		location="classpath:org.springframework.cassandra.test.integration.support.SpringCqlBuildProperties.properties" />
 
 	<cass:cluster port="${build.cassandra.native_transport_port}">
-		<cass:keyspace action="CREATE" name="minimal" />
+		<cass:keyspace action="CREATE_DROP" name="minimal" />
 	</cass:cluster>
 
 	<cass:session keyspace-name="minimal" />

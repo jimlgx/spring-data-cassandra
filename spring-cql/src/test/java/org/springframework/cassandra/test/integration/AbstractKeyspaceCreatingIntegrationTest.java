@@ -66,9 +66,9 @@ public abstract class AbstractKeyspaceCreatingIntegrationTest extends AbstractEm
 	 * Whether to drop the keyspace that was created after the test has completed. Subclasses should override and return
 	 * true, since this default implementation returns false.
 	 */
-	/*public boolean dropKeyspaceAfterTest() {
+	public boolean dropKeyspaceAfterTest() {
 		return false;
-	}*/
+	}
 
 	public void ensureKeyspaceAndSession() {
 

@@ -50,6 +50,7 @@ public class AbstractEmbeddedCassandraIntegrationTest {
 
 	protected static SpringCqlBuildProperties PROPS = new SpringCqlBuildProperties();
 	protected static int CASSANDRA_NATIVE_PORT = PROPS.getCassandraPort();
+	protected static long CQL_INIT_TIMEOUT = PROPS.getCqlInitializationTimeout();
 
 	/**
 	 * The session connected to the system keyspace.

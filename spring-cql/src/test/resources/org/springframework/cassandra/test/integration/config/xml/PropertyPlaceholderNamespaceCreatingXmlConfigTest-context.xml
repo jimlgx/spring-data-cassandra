@@ -57,7 +57,7 @@
 			so-linger="${socket.soLinger}" tcp-no-delay="${socket.tcpNoDelay}"
 			receive-buffer-size="${socket.receiveBufferSize}" send-buffer-size="${socket.sendBufferSize}" />
 		<cassandra:keyspace name="${keyspace.name}" action="${keyspace.action}" />
-		<cassandra:keyspace name="Foo123" action="CREATE"
+		<cassandra:keyspace name="Foo123" action="CREATE_DROP"
 			durable-writes="true">
 			<cassandra:replication class="NETWORK_TOPOLOGY_STRATEGY">
 				<cassandra:data-center replication-factor="${dc1.rf}"

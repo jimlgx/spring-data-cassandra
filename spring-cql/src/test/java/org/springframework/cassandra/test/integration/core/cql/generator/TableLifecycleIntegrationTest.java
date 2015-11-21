@@ -47,17 +47,14 @@ public class TableLifecycleIntegrationTest extends AbstractKeyspaceCreatingInteg
 		super("tlit");
 	}
 
-	/*
 	@Override
 	public boolean dropKeyspaceAfterTest() {
 		return true;
-	}*/
+	}
 
-	// This only ensures the keyspace exists before each test, while using a static session from the parent object.
-	// TODO - DW Make this better.
 	@Rule
 	public CassandraCQLUnit cassandraCQLUnit = new CassandraCQLUnit(new ClassPathCQLDataSet(
-			"cassandraOperationsTest-cql-dataload.cql", this.keyspace), CASSANDRA_CONFIG, CASSANDRA_NATIVE_PORT);
+			"cassandraOperationsTest-cql-dataload.cql", this.keyspace), CASSANDRA_CONFIG, CQL_INIT_TIMEOUT);
 
 	@Test
 	public void testDrop() {
