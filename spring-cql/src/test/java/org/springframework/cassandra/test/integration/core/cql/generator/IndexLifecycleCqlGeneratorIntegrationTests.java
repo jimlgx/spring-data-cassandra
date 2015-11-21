@@ -46,7 +46,7 @@ public class IndexLifecycleCqlGeneratorIntegrationTests extends AbstractKeyspace
 	@Test
 	public void lifecycleTest() {
 
-		session.execute("create table mytable (id uuid primary key, column1 text)");
+		getTemplate().execute("create table mytable (id uuid primary key, column1 text)");
 
 		CreateIndexCqlGeneratorTests.BasicTest createTest = new CreateIndexCqlGeneratorTests.BasicTest();
 		DropIndexCqlGeneratorTests.BasicTest dropTest = new DropIndexCqlGeneratorTests.BasicTest();

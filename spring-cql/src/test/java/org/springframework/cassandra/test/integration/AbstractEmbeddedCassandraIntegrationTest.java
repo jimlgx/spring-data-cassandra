@@ -24,6 +24,8 @@ import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cassandra.core.CqlOperations;
+import org.springframework.cassandra.core.CqlTemplate;
 import org.springframework.cassandra.test.integration.support.SpringCqlBuildProperties;
 import org.springframework.cassandra.test.unit.support.Utils;
 
@@ -91,5 +93,9 @@ public class AbstractEmbeddedCassandraIntegrationTest {
 
 	public AbstractEmbeddedCassandraIntegrationTest() {
 		ensureClusterConnection();
+	}
+
+	public CqlOperations getSystemTemplate() {
+		return new CqlTemplate(system);
 	}
 }

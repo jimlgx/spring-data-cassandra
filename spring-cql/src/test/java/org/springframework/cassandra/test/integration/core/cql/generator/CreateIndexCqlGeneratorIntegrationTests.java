@@ -64,7 +64,7 @@ public class CreateIndexCqlGeneratorIntegrationTests {
 		// CASSANDRA_CONFIG, CASSANDRA_NATIVE_PORT);
 		@Before
 		public void before() {
-			session.execute("create table mytable (id uuid primary key, column1 text)");
+			getTemplate().execute("create table mytable (id uuid primary key, column1 text)");
 		}
 
 		@Override
