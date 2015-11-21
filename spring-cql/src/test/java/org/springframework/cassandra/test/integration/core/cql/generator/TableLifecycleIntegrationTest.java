@@ -20,6 +20,9 @@ import static org.springframework.cassandra.test.integration.core.cql.generator.
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.MethodRule;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cassandra.core.cql.generator.DropTableCqlGenerator;
@@ -56,13 +59,29 @@ public class TableLifecycleIntegrationTest extends AbstractKeyspaceCreatingInteg
 			"cassandraOperationsTest-cql-dataload.cql", this.keyspace), CASSANDRA_CONFIG, CQL_INIT_TIMEOUT);
 	*/
 
-	@Rule
-	public void rule() {
-		getTemplate().execute("create table book (isbn text, title text, author text, pages int, PRIMARY KEY (isbn));");
-		getTemplate().execute("create table book_alt (isbn text, title text, author text, pages int, PRIMARY KEY (isbn));");
-		getTemplate().execute(
-				"insert into book (isbn, title, author, pages) values ('999999999', 'Book of Nines', 'Nine Nine', 999);");
+	public class BookRule implements MethodRule {
+
+		@Override
+		public Statement apply(Statement base, FrameworkMethod method, Object target) {
+
+			return new Statement() {
+
+				@Override
+				public void evaluate() throws Throwable {
+					getTemplate().execute(
+							"create table book (isbn text, title text, author text, pages int, PRIMARY KEY (isbn));");
+					getTemplate().execute(
+							"create table book_alt (isbn text, title text, author text, pages int, PRIMARY KEY (isbn));");
+					getTemplate().execute(
+							"insert into book (isbn, title, author, pages) values ('999999999', 'Book of Nines', 'Nine Nine', 999);");
+				}
+
+			};
+		}
 	}
+
+	@Rule
+	public BookRule bookRule = new BookRule();
 
 	@Test
 	public void testDrop() {

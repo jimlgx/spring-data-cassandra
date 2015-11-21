@@ -17,7 +17,7 @@ package org.springframework.cassandra.test.integration.core.cql.generator;
 
 import static org.springframework.cassandra.test.integration.core.cql.generator.CqlIndexSpecificationAssertions.assertIndex;
 
-import org.junit.Rule;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.cassandra.test.integration.AbstractKeyspaceCreatingIntegrationTest;
 import org.springframework.cassandra.test.unit.core.cql.generator.CreateIndexCqlGeneratorTests.BasicTest;
@@ -63,8 +63,8 @@ public class CreateIndexCqlGeneratorIntegrationTests {
 		// "integration/cql/generator/CreateIndexCqlGeneratorIntegrationTests-BasicTest.cql", this.keyspace),
 		// CASSANDRA_CONFIG, CASSANDRA_NATIVE_PORT);
 
-		@Rule
-		public void rule() {
+		@BeforeClass
+		public void beforeClass() {
 			getTemplate().execute("create table mytable (id uuid primary key, column1 text)");
 		}
 
