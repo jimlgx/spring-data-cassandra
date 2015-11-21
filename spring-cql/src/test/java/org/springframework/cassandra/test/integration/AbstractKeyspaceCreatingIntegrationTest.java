@@ -118,7 +118,7 @@ public abstract class AbstractKeyspaceCreatingIntegrationTest extends AbstractEm
 		}
 	}
 
-	protected CqlOperations getTemplate() {
+	protected static CqlOperations getTemplate() {
 
 		return new CqlTemplate(session);
 	}
