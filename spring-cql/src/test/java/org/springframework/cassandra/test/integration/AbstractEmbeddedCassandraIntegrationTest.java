@@ -31,6 +31,7 @@ import org.springframework.cassandra.test.unit.support.Utils;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.SocketOptions;
 
 /**
  * Abstract base integration test class that starts an embedded Cassandra instance.
@@ -74,7 +75,15 @@ public class AbstractEmbeddedCassandraIntegrationTest {
 	}
 
 	public static Cluster cluster() {
-		return Cluster.builder().addContactPoint(CASSANDRA_HOST).withPort(CASSANDRA_NATIVE_PORT).build();
+		return Cluster.builder().addContactPoint(CASSANDRA_HOST).withPort(CASSANDRA_NATIVE_PORT)
+				.withSocketOptions(getSocketOptions()).build();
+	}
+
+	public static SocketOptions getSocketOptions() {
+		SocketOptions socketOptions = new SocketOptions();
+		socketOptions.setReadTimeoutMillis(120000);
+		socketOptions.setConnectTimeoutMillis(60000);
+		return socketOptions;
 	}
 
 	/**
