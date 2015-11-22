@@ -18,11 +18,9 @@ package org.springframework.cassandra.test.integration.core.cql.generator;
 import static org.springframework.cassandra.test.integration.core.cql.generator.CqlTableSpecificationAssertions.assertNoTable;
 import static org.springframework.cassandra.test.integration.core.cql.generator.CqlTableSpecificationAssertions.assertTable;
 
+import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.MethodRule;
-import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cassandra.core.cql.generator.DropTableCqlGenerator;
@@ -53,35 +51,9 @@ public class TableLifecycleIntegrationTest extends AbstractKeyspaceCreatingInteg
 		return true;
 	}
 
-	/*
 	@Rule
-	public CassandraCQLUnit cassandraCQLUnit = new CassandraCQLUnit(new ClassPathCQLDataSet(
-			"cassandraOperationsTest-cql-dataload.cql", this.keyspace), CASSANDRA_CONFIG, CQL_INIT_TIMEOUT);
-	*/
-
-	public class BookRule implements MethodRule {
-
-		@Override
-		public Statement apply(Statement base, FrameworkMethod method, Object target) {
-
-			return new Statement() {
-
-				@Override
-				public void evaluate() throws Throwable {
-					getTemplate().execute(
-							"create table book (isbn text, title text, author text, pages int, PRIMARY KEY (isbn));");
-					getTemplate().execute(
-							"create table book_alt (isbn text, title text, author text, pages int, PRIMARY KEY (isbn));");
-					getTemplate().execute(
-							"insert into book (isbn, title, author, pages) values ('999999999', 'Book of Nines', 'Nine Nine', 999);");
-				}
-
-			};
-		}
-	}
-
-	@Rule
-	public BookRule bookRule = new BookRule();
+	public SpringCqlLoader cqlLoader = new SpringCqlLoader(new ClassPathCQLDataSet(
+			"cassandraOperationsTest-cql-dataload.cql"), session);
 
 	@Test
 	public void testDrop() {
@@ -124,21 +96,24 @@ public class TableLifecycleIntegrationTest extends AbstractKeyspaceCreatingInteg
 
 		// assertTable(alterTest.specification, keyspace, session);
 
+		DropTableTest dropTest = new DropTableTest();
+		dropTest.prepare();
+
+		log.info(dropTest.cql);
+
+		session.execute(dropTest.cql);
+
+		assertNoTable(dropTest.specification, keyspace, session);
+
 	}
 
 	public class DropTableTest extends DropTableCqlGeneratorTests.DropTableTest {
 
-		/* (non-Javadoc)
-		 * @see org.springframework.cassandra.test.unit.core.cql.generator.TableOperationCqlGeneratorTest#specification()
-		 */
 		@Override
 		public DropTableSpecification specification() {
 			return DropTableSpecification.dropTable().name(createTableTest.specification.getName());
 		}
 
-		/* (non-Javadoc)
-		 * @see org.springframework.cassandra.test.unit.core.cql.generator.TableOperationCqlGeneratorTest#generator()
-		 */
 		@Override
 		public DropTableCqlGenerator generator() {
 			return new DropTableCqlGenerator(specification);

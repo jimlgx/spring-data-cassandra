@@ -28,12 +28,10 @@ import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
+import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.MethodRule;
-import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cassandra.core.ConsistencyLevel;
@@ -54,6 +52,7 @@ import org.springframework.cassandra.core.SessionCallback;
 import org.springframework.cassandra.core.WriteOptions;
 import org.springframework.cassandra.core.keyspace.CreateTableSpecification;
 import org.springframework.cassandra.test.integration.AbstractKeyspaceCreatingIntegrationTest;
+import org.springframework.cassandra.test.integration.core.cql.generator.SpringCqlLoader;
 import org.springframework.dao.DataAccessException;
 import org.springframework.util.CollectionUtils;
 
@@ -95,34 +94,9 @@ public class CQLOperationsTest extends AbstractKeyspaceCreatingIntegrationTest {
 	/**
 	 * This loads any test specific Cassandra objects
 	 */
-	/*@Rule
-	public CassandraCQLUnit cassandraCQLUnit = new CassandraCQLUnit(new ClassPathCQLDataSet(
-			"cassandraOperationsTest-cql-dataload.cql", this.keyspace), CASSANDRA_CONFIG, CQL_INIT_TIMEOUT);
-	*/
-
-	public class BookRule implements MethodRule {
-
-		@Override
-		public Statement apply(Statement base, FrameworkMethod method, Object target) {
-
-			return new Statement() {
-
-				@Override
-				public void evaluate() throws Throwable {
-					getTemplate().execute(
-							"create table book (isbn text, title text, author text, pages int, PRIMARY KEY (isbn));");
-					getTemplate().execute(
-							"create table book_alt (isbn text, title text, author text, pages int, PRIMARY KEY (isbn));");
-					getTemplate().execute(
-							"insert into book (isbn, title, author, pages) values ('999999999', 'Book of Nines', 'Nine Nine', 999);");
-				}
-
-			};
-		}
-	}
-
 	@Rule
-	public BookRule bookRule = new BookRule();
+	public SpringCqlLoader cqlLoader = new SpringCqlLoader(new ClassPathCQLDataSet(
+			"cassandraOperationsTest-cql-dataload.cql"), session);
 
 	@Before
 	public void setupTemplate() {
