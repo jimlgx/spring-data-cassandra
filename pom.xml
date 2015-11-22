@@ -34,7 +34,8 @@
 		<el.version>1.0</el.version>
 		<failsafe.version>2.16</failsafe.version>
 		<jamm.version>0.2.5</jamm.version>
-		<cassandra>2.1.9</cassandra>
+		<cassandra.version>2.1.11</cassandra.version>
+		<cassandra-driver-dse.version>2.1.7.1</cassandra-driver-dse.version>
 	</properties>
 
 	<developers>
@@ -79,7 +80,7 @@
 			<dependency>
 				<groupId>com.datastax.cassandra</groupId>
 				<artifactId>cassandra-driver-dse</artifactId>
-				<version>${cassandra}</version>
+				<version>${cassandra-driver-dse.version}</version>
 				<exclusions>
 					<exclusion>
 						<artifactId>slf4j-log4j12</artifactId>
@@ -149,9 +150,8 @@
 
 			<dependency>
 				<groupId>org.cassandraunit</groupId>
-				<artifactId>cassandra-unit</artifactId>
+				<artifactId>cassandra-unit-spring</artifactId>
 				<version>${cassandra-unit.version}</version>
-				<scope>test</scope>
 				<exclusions>
 					<exclusion>
 						<artifactId>cassandra-all</artifactId>
@@ -162,12 +162,6 @@
 						<artifactId>cassandra-driver-core</artifactId>
 					</exclusion>
 				</exclusions>
-			</dependency>
-
-			<dependency>
-				<groupId>org.cassandraunit</groupId>
-				<artifactId>cassandra-unit-spring</artifactId>
-				<version>${cassandra-unit.version}</version>
 				<scope>test</scope>
 			</dependency>
 
@@ -229,10 +223,6 @@
 		<dependency>
 			<groupId>com.github.stephenc</groupId>
 			<artifactId>jamm</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.cassandraunit</groupId>
-			<artifactId>cassandra-unit</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.cassandraunit</groupId>
