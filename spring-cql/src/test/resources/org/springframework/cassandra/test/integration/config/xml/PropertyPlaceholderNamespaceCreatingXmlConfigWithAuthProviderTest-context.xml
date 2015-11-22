@@ -7,7 +7,7 @@
                          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
 	<context:property-placeholder
-		location="classpath:/org/springframework/cassandra/test/integration/config/xml/ppncxct.properties" />
+		location="classpath:/org/springframework/cassandra/test/integration/config/xml/ppncxct-authProvider.properties" />
 
 	<bean id="authProvider" class="com.datastax.driver.auth.DseAuthProvider" />
 
@@ -38,7 +38,6 @@
 	<cassandra:cluster contact-points="${cluster.contactPoints}"
 		port="${cluster.port}" compression="${cluster.compression}"
 		auth-info-provider-ref="authProvider"
-		username="${auth.username}" password="${auth.password}"
 		metrics-enabled="${cluster.metricsEnabled}"
 		jmx-reporting-enabled="${cluster.jmxReportingEnabled}"
 		reconnection-policy-ref="reconnectionPolicy" retry-policy-ref="retryPolicy"
@@ -57,7 +56,7 @@
 			so-linger="${socket.soLinger}" tcp-no-delay="${socket.tcpNoDelay}"
 			receive-buffer-size="${socket.receiveBufferSize}" send-buffer-size="${socket.sendBufferSize}" />
 		<cassandra:keyspace name="${keyspace.name}" action="${keyspace.action}" />
-		<cassandra:keyspace name="Foo123" action="CREATE_DROP"
+		<cassandra:keyspace name="Foo123Auth" action="CREATE_DROP"
 			durable-writes="true">
 			<cassandra:replication class="NETWORK_TOPOLOGY_STRATEGY">
 				<cassandra:data-center replication-factor="${dc1.rf}"

@@ -15,6 +15,7 @@
  */
 package org.springframework.cassandra.test.integration;
 
+import org.junit.After;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cassandra.core.CqlOperations;
@@ -138,9 +139,13 @@ public abstract class AbstractKeyspaceCreatingIntegrationTest extends AbstractEm
 		}
 
 	}
-	/*
+
 	@After
 	public void after() {
+
+		log.debug(String.format("After the KeyspaceGenerating Test, dropKeyspaceAfterTest() [%s], keyspace [%s]",
+				dropKeyspaceAfterTest(), keyspace));
+
 		if (dropKeyspaceAfterTest() && keyspace != null) {
 
 			session.execute("USE system");
@@ -151,5 +156,5 @@ public abstract class AbstractKeyspaceCreatingIntegrationTest extends AbstractEm
 
 			log.info("dropped keyspace {}", keyspace);
 		}
-	}*/
+	}
 }

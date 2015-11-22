@@ -17,7 +17,6 @@ package org.springframework.cassandra.config;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -126,6 +125,13 @@ public class CassandraCqlClusterFactoryBean implements FactoryBean<Cluster>, Ini
 			throw new IllegalArgumentException("at least one server is required");
 		}
 
+		/*
+		 * Warn if setting authProvider and username
+		 */
+		if (authProvider != null && username != null) {
+			throw new IllegalArgumentException("Only specify an authProvider OR username/password, but not both");
+		}
+
 		Cluster.Builder builder = Cluster.builder();
 
 		builder.addContactPoints(StringUtils.commaDelimitedListToStringArray(contactPoints)).withPort(port);
@@ -144,10 +150,8 @@ public class CassandraCqlClusterFactoryBean implements FactoryBean<Cluster>, Ini
 
 		if (authProvider != null) {
 			builder.withAuthProvider(authProvider);
-
-			if (username != null) {
-				builder.withCredentials(username, password);
-			}
+		} else if (username != null) {
+			builder.withCredentials(username, password);
 		}
 
 		if (loadBalancingPolicy != null) {
@@ -222,9 +226,13 @@ public class CassandraCqlClusterFactoryBean implements FactoryBean<Cluster>, Ini
 				system = specs.size() == 0 ? null : cluster.connect();
 				template = system == null ? null : new CqlTemplate(system);
 
-				Iterator<?> i = specs.iterator();
-				while (i.hasNext()) {
-					KeyspaceActionSpecification<?> spec = (KeyspaceActionSpecification<?>) i.next();
+				log.debug(String.format("Size of SpecificationsList [%s]", specs.size()));
+
+				// Iterator<?> i = specs.iterator();
+				// while (i.hasNext()) {
+				for (Object o : specs) {
+					KeyspaceActionSpecification<?> spec = (KeyspaceActionSpecification<?>) o;
+					log.debug(String.format("Spec type [%s]", spec.getClass().getName()));
 					String cql = (spec instanceof CreateKeyspaceSpecification) ? new CreateKeyspaceCqlGenerator(
 							(CreateKeyspaceSpecification) spec).toCql() : new DropKeyspaceCqlGenerator(
 							(DropKeyspaceSpecification) spec).toCql();
@@ -336,10 +344,10 @@ public class CassandraCqlClusterFactoryBean implements FactoryBean<Cluster>, Ini
 
 	private static Compression convertCompressionType(CompressionType type) {
 		switch (type) {
-			case NONE:
-				return Compression.NONE;
-			case SNAPPY:
-				return Compression.SNAPPY;
+		case NONE:
+			return Compression.NONE;
+		case SNAPPY:
+			return Compression.SNAPPY;
 		}
 		throw new IllegalArgumentException("unknown compression type " + type);
 	}

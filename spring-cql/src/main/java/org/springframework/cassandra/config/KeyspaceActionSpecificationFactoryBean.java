@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -43,6 +45,8 @@ import org.springframework.util.Assert;
  */
 public class KeyspaceActionSpecificationFactoryBean implements FactoryBean<Set<KeyspaceActionSpecification<?>>>,
 		InitializingBean, DisposableBean {
+
+	private static final Logger log = LoggerFactory.getLogger(KeyspaceActionSpecificationFactoryBean.class);
 
 	private KeyspaceAction action;
 	private String name;
@@ -71,15 +75,20 @@ public class KeyspaceActionSpecificationFactoryBean implements FactoryBean<Set<K
 		Assert.hasText(name, "Keyspace Name is required for a Keyspace Action");
 		Assert.notNull(action, "Keyspace Action is required for a Keyspace Action");
 
+		log.debug(String.format("Keyspace Action [%s]", action));
+
 		switch (action) {
-			case CREATE_DROP:
-				specs.add(generateDropKeyspaceSpecification());
-			case CREATE:
-				// Assert.notNull(replicationStrategy, "Replication Strategy is required to create a Keyspace");
-				specs.add(generateCreateKeyspaceSpecification());
-				break;
-			case ALTER:
-				break;
+		case CREATE_DROP:
+			log.debug(String.format("Adding Drop Keyspace Specification for [%s]", name));
+			specs.add(generateDropKeyspaceSpecification());
+		case CREATE:
+			log.debug(String.format("Adding Create Keyspace Specification for [%s]", name));
+			specs.add(generateCreateKeyspaceSpecification());
+			break;
+		case ALTER:
+			break;
+		default:
+			break;
 		}
 
 	}

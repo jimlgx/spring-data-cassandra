@@ -31,7 +31,8 @@ import com.datastax.driver.core.Session;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class PropertyPlaceholderNamespaceCreatingXmlConfigTest extends AbstractKeyspaceCreatingIntegrationTest {
+public class PropertyPlaceholderNamespaceCreatingXmlConfigWithAuthProviderTest extends
+		AbstractKeyspaceCreatingIntegrationTest {
 
 	@Inject
 	Session s;
@@ -43,9 +44,14 @@ public class PropertyPlaceholderNamespaceCreatingXmlConfigTest extends AbstractK
 	public void test() {
 		IntegrationTestUtils.assertSession(s);
 
-		IntegrationTestUtils.assertKeyspaceExists("ppncxct", s);
+		IntegrationTestUtils.assertKeyspaceExists("ppncxctauth", s);
 
 		assertNotNull(ops);
+	}
+
+	@Override
+	public boolean dropKeyspaceAfterTest() {
+		return true;
 	}
 
 }
